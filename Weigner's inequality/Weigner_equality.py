@@ -3,6 +3,7 @@ from qiskit.visualization import plot_histogram
 from qiskit_rng import Generator
 import matplotlib.pyplot as plt
 from qiskit import *
+from timeit import default_timer as timer
 
 # TODO
 # Exporter et le run en executable et s'assurer que le graph est mis à jour en TR
@@ -49,8 +50,9 @@ RS_state.ry(pi/3,1)
 RS_state.measure(0,0)
 RS_state.measure(1,1)
 
-plt.axis([0, ITERATIONS, -0.3, 0.2])
+plt.axis([0, ITERATIONS, -0.3, 0.3])
 for i in range(ITERATIONS):
+    start = timer()
     key_bits = list()
     counts_rz = list((0,0))
     counts_zs = list((0,0))
@@ -114,12 +116,18 @@ for i in range(ITERATIONS):
     else:
         p_rs = counts_rs[1]/counts_rs[0]
     W = p_rz + p_zs - p_rs
+    end = timer()
     print("Iteration : " + str(i + 1))
     print("P++(-30,0)=" + str(p_rz))
     print("P++(0,30)=" + str(p_zs))
     print("P++(-30,30)=" + str(p_rs))
     print("W=" + str(W))
     print("k=" + str(key))
+    print("Time elapsed (seconds) = " + str(end-start))
     plt.scatter(i, W)
     plt.pause(0.5)
+# The legend will be displayed only at the end
+plt.title("Weigner's equality with listener; BATCH SIZE = " + str(BATCH_SIZE))
+plt.xlabel("Number of Iterations")
+plt.ylabel("W")
 plt.show()
