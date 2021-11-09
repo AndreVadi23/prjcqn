@@ -1,0 +1,5 @@
+matplotlib==3.4.2
+numpy==1.20.3
+qiskit==0.31.0
+qiskit_rng==0.2.2
+qiskit_terra==0.18.3
