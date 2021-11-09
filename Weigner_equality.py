@@ -58,28 +58,40 @@ for i in range(ITERATIONS):
         output = generator.sample(num_raw_bits=1).block_until_ready()
         a = (output.raw_bits[0],output.raw_bits[1])
         if(a == (0,1)):
-            job = execute(initialize + RZ_state, backend = simulator, shots = 1)
+            if ( (i+1) % 5 == 0 ):
+                job = execute(eve + RZ_state, backend = simulator, shots = 1)
+            else:
+                job = execute(initialize + RZ_state, backend = simulator, shots = 1)
             counts_rz[0] += 1
             results = job.result()
             counts = results.get_counts()
             if '00' in counts:
                 counts_rz[1] += 1
         elif(a == (1,0)):
-            job = execute(initialize + ZS_state, backend = simulator, shots = 1)
+            if ( (i+1) % 5 == 0 ):
+                job = execute(eve + ZS_state, backend = simulator, shots = 1)
+            else:
+                job = execute(initialize + ZS_state, backend = simulator, shots = 1)
             counts_zs[0]+=1 
             results = job.result()
             counts = results.get_counts()
             if '00' in counts:
                 counts_zs[1]+=1
         elif(a == (1,1)):
-            job = execute(initialize + RS_state, backend = simulator, shots = 1)
+            if ( (i+1) % 5 == 0 ):
+                job = execute(eve + RS_state, backend = simulator, shots = 1)
+            else:
+                job = execute(initialize + RS_state, backend = simulator, shots = 1)
             counts_rs[0]+=1
             results = job.result()
             counts = results.get_counts()
             if '00' in counts:
                 counts_rs[1]+=1
         else:
-            job = execute(initialize + ZZ_state, backend = simulator, shots = 1)
+            if ( (i+1) % 5 == 0 ):
+                job = execute(eve + ZZ_state, backend = simulator, shots = 1)
+            else:
+                job = execute(initialize + ZZ_state, backend = simulator, shots = 1)
             results = job.result()
             counts = results.get_counts()
             key_bits.append(list(counts.keys())[0][0])
