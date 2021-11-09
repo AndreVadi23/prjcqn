@@ -11,9 +11,9 @@ from qiskit import *
 # qbit 0 represents Alice
 # qbit 1 represents Bob
 
-ITERATIONS = 5
+ITERATIONS = 10
 
-BATCH_SIZE = 1024
+BATCH_SIZE = 4096
 simulator = Aer.get_backend('qasm_simulator')
 generator = Generator(backend=simulator)
 EVE_INTERVENTION = [4,5,6,7]
