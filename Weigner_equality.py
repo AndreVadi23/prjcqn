@@ -16,6 +16,7 @@ ITERATIONS = 5
 BATCH_SIZE = 1024
 simulator = Aer.get_backend('qasm_simulator')
 generator = Generator(backend=simulator)
+EVE_INTERVENTION = [4,5,6,7]
 
 #Initialisation,
 initialize = QuantumCircuit(2,2)
@@ -58,7 +59,7 @@ for i in range(ITERATIONS):
         output = generator.sample(num_raw_bits=1).block_until_ready()
         a = (output.raw_bits[0],output.raw_bits[1])
         if(a == (0,1)):
-            if ( (i+1) % 5 == 0 ):
+            if ( i in EVE_INTERVENTION ):
                 job = execute(eve + RZ_state, backend = simulator, shots = 1)
             else:
                 job = execute(initialize + RZ_state, backend = simulator, shots = 1)
@@ -68,7 +69,7 @@ for i in range(ITERATIONS):
             if '00' in counts:
                 counts_rz[1] += 1
         elif(a == (1,0)):
-            if ( (i+1) % 5 == 0 ):
+            if ( i in EVE_INTERVENTION ):
                 job = execute(eve + ZS_state, backend = simulator, shots = 1)
             else:
                 job = execute(initialize + ZS_state, backend = simulator, shots = 1)
@@ -78,7 +79,7 @@ for i in range(ITERATIONS):
             if '00' in counts:
                 counts_zs[1]+=1
         elif(a == (1,1)):
-            if ( (i+1) % 5 == 0 ):
+            if ( i in EVE_INTERVENTION ):
                 job = execute(eve + RS_state, backend = simulator, shots = 1)
             else:
                 job = execute(initialize + RS_state, backend = simulator, shots = 1)
@@ -88,7 +89,7 @@ for i in range(ITERATIONS):
             if '00' in counts:
                 counts_rs[1]+=1
         else:
-            if ( (i+1) % 5 == 0 ):
+            if ( i in EVE_INTERVENTION ):
                 job = execute(eve + ZZ_state, backend = simulator, shots = 1)
             else:
                 job = execute(initialize + ZZ_state, backend = simulator, shots = 1)
